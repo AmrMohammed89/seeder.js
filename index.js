@@ -32,7 +32,11 @@ module.exports = function seeder(seedObject, mongoose, logger, cb) {
           return cb(err);
         }
         if(!mongoDocument) {
-          mongoDocument = new Model({_id: new ObjectId(_id)});
+          if (Model.schema.paths._id.instance.indexOf('ObjectID') > 0){
+            mongoDocument = new Model({_id: new ObjectId(_id)});
+          } else {
+            mongoDocument = new Model({_id: _id});
+          }
         }
 
         for(var key in document) {
